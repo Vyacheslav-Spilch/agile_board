@@ -1,16 +1,13 @@
 import { toJS } from  'mobx'
 import { observer } from 'mobx-react-lite'
+import { Dashboard } from './components/dashboard/Dashboard';
 import { useStore } from './context/useStore';
 
 const App = observer( function App() {
 
-  const { board } = useStore()
-
-  console.log(toJS(board)); 
-
   return (
     <div>
-      Start
+      <Dashboard />
     </div>
   )
 })

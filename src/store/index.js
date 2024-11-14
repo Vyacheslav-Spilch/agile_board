@@ -5,6 +5,6 @@ import { UsersStore } from './users'
 
 export const RootStore = types.model('Root', {
     users: types.optional(UsersStore, {}),
-    board: types.optional(BoardStore, {})
+    boards: types.optional(BoardStore, {})
 })
 
