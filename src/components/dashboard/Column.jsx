@@ -12,7 +12,7 @@ function getItemStyle (draggableStyle) {
     }
 }
 
-export const Column = observer(function Column ({section}) {
+export const Column = observer(({section}) => {
     return (
         <div>
             {section.tasks.map((task, index) => (

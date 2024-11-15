@@ -1,7 +1,6 @@
 import { useContext } from "react"
-import { RootStoreContext } from "./StoreContext"
-
+import { StoreContext } from '../main'
 
 export const useStore = () => {
-    return useContext(RootStoreContext)
+    return useContext(StoreContext)
 } 

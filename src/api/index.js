@@ -17,7 +17,7 @@ class ApiCall {
                 'Content-Type': 'application/json'
             }
         })
-        return request.data
+        return await request.data
     }
 
     async get (path, searchParams = {}) {
