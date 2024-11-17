@@ -15,6 +15,15 @@ export const UsersStore = types.model('UsersStore', {
         users: types.maybe(types.array(User)),
         me: types.maybe(ActiveUser),
     })
+    .views(self => {
+        return {
+            get list () {
+                if(self.users?.length) {
+                    return self.users.map(({id, name}) => ({ id, name}))
+                }
+            }
+        }
+    })
     .actions(self => {
         return {
             load: flow(function* () {

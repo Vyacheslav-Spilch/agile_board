@@ -24,16 +24,17 @@ export const Header = observer(() => {
                                         backgroundColor: '#fff',
                                         marginLeft: 10
                                     }}
+                                    native
                                     value={boards?.active?.id || ''}
-                                    onChange={() => {}}
+                                    onChange={e => boards?.selectBoard(e.target.value)}
                                 >   
-                                    <MenuItem value='' disabled>
+                                    <option value='' disabled>
                                         -
-                                    </MenuItem>
+                                    </option>
                                     {boards?.list.map(board => (
-                                        <MenuItem key={board?.id} value={board?.id}>
+                                        <option key={board?.id} value={board?.id}>
                                             {board?.title}
-                                        </MenuItem>
+                                        </option>
                                     ))}
                                 </Select>
                             </FormControl>

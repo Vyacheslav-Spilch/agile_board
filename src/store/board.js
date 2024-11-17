@@ -1,6 +1,7 @@
-import { types, flow, getParent, cast } from 'mobx-state-tree'
+import { types, flow, getParent, cast, onSnapshot } from 'mobx-state-tree'
 import  apiCall from '../api/index'
 import { User } from './users'
+import { v4 } from 'uuid'
 
 const Task = types.model('Task', {
     id: types.identifier,
@@ -22,11 +23,17 @@ const BoardSection = types.model('BoardSection', {
                 const { tasks } = yield apiCall.get(`boards/${boardID}/tasks/${status}`)
 
                 self.tasks = tasks
-                // self.tasks = cast(tasks);
+                onSnapshot(self, self.save)
+            }),
+            save: flow(function* ({ tasks }) {
+                console.log(tasks);
+                const { id: boardID } = getParent(self, 2)
+                const { id: status } = self 
+                yield apiCall.put(`boards/${boardID}/tasks/${status}`, { tasks })
             }),
             afterCreate () {
                 self.load()
-            }
+            },
         }
     })
 
@@ -44,6 +51,14 @@ const Board = types.model('Board', {
             const [ task ] = fromSection.tasks.splice(taskToMoveIndex, 1)
 
             toSection.tasks.splice(destination.index, 0, task.toJSON())
+        },
+        addTask (sectionId, data) {
+            const section = self.sections.find(section => section.id === sectionId)
+            debugger
+            section?.tasks.push({
+                id: v4(),
+                ...data
+            })
         }
     }
 })
@@ -60,12 +75,14 @@ export const BoardStore = types.model('BoardStore', {
     
 }).actions(self => {
         return  {
+            selectBoard(id) {
+                self.active = id
+            },
             load: flow(function* () {
                 self.boards = yield apiCall.get('boards')
-                self.active = 'MAIN'
             }),
             afterCreate () {
                 self.load()
-            }
+            },
         }
 })

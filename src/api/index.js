@@ -12,9 +12,10 @@ class ApiCall {
     async perform (url, data, config) {
         const request = await axios(`${this.domain}/${url}`, {
             ...config,
+            method: config?.method,
             data,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
         })
         return await request.data
@@ -25,22 +26,20 @@ class ApiCall {
     }
 
     async post (path, payload) {
-        return await this.perform(path, {
-            method: 'POST',
-            data: payload
+        return await this.perform(path, payload, {
+            method: 'post',
         })
     }
 
     async put (path, payload) {
-        return await this.perform(path, {
-            method: 'PUT',
-            data: payload
+        return await this.perform(path, payload, {
+            method: 'put',
         })
     }
 
     async delete (path) {
         return await this.perform(path, {
-            method: 'DELETE'
+            method: 'delete'
         })
     }
 }
